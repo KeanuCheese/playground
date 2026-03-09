@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en_US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site Collab | Odoo Embed | Y2K Edition</title>
+  <style>
+    #site-collab-odoo,
+    #site-collab-odoo * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background-color: #050818 !important;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: #050818 !important;
+      background:
+        linear-gradient(180deg, rgba(7, 11, 33, 0.6), rgba(7, 11, 33, 0.6)),
+        #050818;
+      font-family: "Trebuchet MS", "Verdana", "Tahoma", sans-serif;
+    }
+
+    #site-collab-odoo {
+      --bg-dark: #070b21;
+      --neon-cyan: #50eaff;
+      --neon-pink: #ff5bcd;
+      --neon-lime: #b8ff39;
+      --panel: rgba(18, 23, 52, 0.9);
+      --line: #8da0ff;
+      --text: #edf1ff;
+      --muted: #c3ccff;
+
+      position: relative;
+      isolation: isolate;
+      width: min(900px, 94vw);
+      margin: 28px auto;
+      padding: clamp(14px, 2.3vw, 28px);
+      border: 2px solid #d7dcff;
+      border-radius: 18px;
+      background:
+        linear-gradient(120deg, rgba(80, 234, 255, 0.16), rgba(255, 91, 205, 0.12) 45%, rgba(184, 255, 57, 0.1)),
+        url("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNzlhdnRsdmF3d3lib3dsaWEwamQ0ejBmeWZuYjVicnVndXFuc2RhNSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3AWArcvb0SSrtqxmFZ/giphy.gif") center / 260px 260px repeat,
+        var(--bg-dark);
+      color: var(--text);
+      box-shadow:
+        0 0 0 2px #2e3c86,
+        0 0 28px rgba(80, 234, 255, 0.35),
+        0 0 64px rgba(255, 91, 205, 0.22);
+      overflow: hidden;
+      transition: filter .3s ease;
+    }
+
+    #site-collab-odoo.rainbow-on {
+      animation: rainbowGlow 4s linear infinite;
+    }
+
+    @keyframes rainbowGlow {
+      0% { filter: hue-rotate(0deg) saturate(1.05); }
+      100% { filter: hue-rotate(360deg) saturate(1.2); }
+    }
+
+    #site-collab-odoo::before,
+    #site-collab-odoo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: -2;
+      opacity: 0.22;
+      background-size: cover;
+      background-position: center;
+      mix-blend-mode: screen;
+    }
+
+    #site-collab-odoo::before {
+      background-image:
+        linear-gradient(160deg, rgba(5, 8, 22, 0.75), rgba(12, 15, 33, 0.42)),
+        url("kean_wallride.gif");
+      animation: odooFloatA 18s ease-in-out infinite alternate;
+    }
+
+    #site-collab-odoo::after {
+      background-image:
+        linear-gradient(160deg, rgba(16, 5, 24, 0.58), rgba(7, 14, 36, 0.32)),
+        url("kean_5050drop.gif");
+      opacity: 0.2;
+      animation: odooFloatB 22s ease-in-out infinite alternate;
+      z-index: -1;
+    }
+
+    @keyframes odooFloatA {
+      from { transform: scale(1.06) translate(-1%, -1.2%); }
+      to { transform: scale(1.14) translate(1.2%, 1%); }
+    }
+
+    @keyframes odooFloatB {
+      from { transform: scale(1.05) translate(1%, -1%); }
+      to { transform: scale(1.12) translate(-1%, 1.2%); }
+    }
+
+    #site-collab-odoo .scanlines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.06) 0, rgba(255,255,255,0.06) 1px, transparent 2px, transparent 4px);
+      opacity: 0.2;
+      z-index: -1;
+    }
+
+    #site-collab-odoo .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border: 2px solid var(--line);
+      border-radius: 12px;
+      background: linear-gradient(90deg, rgba(41, 52, 126, 0.8), rgba(76, 20, 123, 0.7));
+      box-shadow: 0 0 10px rgba(80, 234, 255, 0.35);
+    }
+
+    #site-collab-odoo .logo {
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-size: clamp(0.9rem, 2.4vw, 1.1rem);
+      color: #fff;
+      text-shadow: 0 0 10px rgba(80, 234, 255, 0.8);
+    }
+
+    #site-collab-odoo .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    #site-collab-odoo .btn {
+      border: 1px solid #97abff;
+      background: linear-gradient(180deg, #1b2f73, #112150);
+      color: #f3f6ff;
+      font-weight: 800;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 7px 11px;
+      border-radius: 9px;
+      cursor: pointer;
+    }
+
+    #site-collab-odoo .btn:hover { filter: brightness(1.12); }
+
+    #site-collab-odoo .btn-accent {
+      background: linear-gradient(180deg, #7f24a5, #4e1b75);
+      border-color: #ff8ae1;
+    }
+
+    #site-collab-odoo .hero {
+      margin-top: 14px;
+      border: 2px solid #8aa2ff;
+      border-radius: 14px;
+      padding: clamp(14px, 2.4vw, 24px);
+      background: linear-gradient(150deg, rgba(13, 16, 36, 0.92), rgba(22, 13, 49, 0.88));
+      box-shadow: inset 0 0 20px rgba(80, 234, 255, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #site-collab-odoo .starburst {
+      position: absolute;
+      right: clamp(10px, 2.2vw, 24px);
+      top: clamp(12px, 2.2vw, 24px);
+      width: clamp(76px, 12vw, 120px);
+      aspect-ratio: 1;
+      clip-path: polygon(50% 0%, 58% 30%, 88% 12%, 70% 42%, 100% 50%, 70% 58%, 88% 88%, 58% 70%, 50% 100%, 42% 70%, 12% 88%, 30% 58%, 0% 50%, 30% 42%, 12% 12%, 42% 30%);
+      background: radial-gradient(circle, #ffe96a 0 42%, #ff8f00 70%, #ff4f4f 100%);
+      color: #2e0b00;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-size: clamp(0.7rem, 1.4vw, 0.85rem);
+      font-weight: 900;
+      line-height: 1.1;
+      text-transform: uppercase;
+      transform: rotate(-10deg);
+      filter: drop-shadow(0 0 8px rgba(255, 233, 106, 0.65));
+    }
+
+    #site-collab-odoo .hello {
+      margin: 0;
+      padding-right: 128px;
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      font-family: "Arial Black", "Impact", sans-serif;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 0 0 8px rgba(80, 234, 255, 0.95), 0 0 18px rgba(255, 91, 205, 0.7);
+    }
+
+    #site-collab-odoo .ticker {
+      margin-top: 14px;
+      border: 1px dashed #92f2ff;
+      border-radius: 10px;
+      padding: 8px 10px;
+      background: rgba(11, 29, 64, 0.9);
+      overflow: hidden;
+      white-space: nowrap;
+      font-weight: 700;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 8px rgba(80, 234, 255, 0.7);
+    }
+
+    #site-collab-odoo .ticker > span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: odooTicker 15s linear infinite;
+    }
+
+    @keyframes odooTicker { to { transform: translateX(-100%); } }
+
+    #site-collab-odoo .intro {
+      margin-top: 14px;
+      display: grid;
+      gap: 8px;
+      font-size: clamp(1rem, 1.9vw, 1.12rem);
+      line-height: 1.6;
+      max-width: 900px;
+    }
+
+    #site-collab-odoo .invite {
+      color: var(--neon-lime);
+      font-weight: 700;
+      text-shadow: 0 0 10px rgba(184, 255, 57, 0.48);
+    }
+
+    #site-collab-odoo .toolbar {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    #site-collab-odoo label { font-weight: 700; color: var(--muted); }
+
+    #site-collab-odoo select,
+    #site-collab-odoo input,
+    #site-collab-odoo textarea {
+      border: 1px solid #b0c3ff;
+      background: #091434;
+      color: #f1f4ff;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-weight: 700;
+      width: 100%;
+    }
+
+    #site-collab-odoo textarea { min-height: 84px; resize: vertical; }
+
+    #site-collab-odoo .grid {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    #site-collab-odoo .panel {
+      border: 2px solid #8ea5ff;
+      border-radius: 12px;
+      padding: 12px;
+      background: var(--panel);
+      box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.08);
+    }
+
+    #site-collab-odoo .panel h2 {
+      margin: 0 0 10px;
+      font-size: 1.08rem;
+      letter-spacing: 0.02em;
+      color: var(--neon-pink);
+      text-transform: uppercase;
+      text-shadow: 0 0 8px rgba(255, 91, 205, 0.6);
+    }
+
+    #site-collab-odoo .services { grid-column: span 6; }
+    #site-collab-odoo .collabs { grid-column: span 4; }
+    #site-collab-odoo .status { grid-column: span 2; }
+
+    #site-collab-odoo ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+    }
+
+    #site-collab-odoo a {
+      color: #8df9ff;
+      font-weight: 700;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    #site-collab-odoo .status ul { list-style: none; padding-left: 0; }
+    #site-collab-odoo .status li {
+      border: 1px solid #8299ff;
+      background: rgba(10, 19, 44, 0.8);
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 0.9rem;
+    }
+
+    #site-collab-odoo .service-cta { margin-top: 12px; }
+    #site-collab-odoo .service-cta .btn { width: 100%; }
+
+    #site-collab-odoo .footer {
+      margin-top: 16px;
+      border-top: 1px dashed #90a8ff;
+      padding-top: 10px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    #site-collab-odoo .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 18, 0.78);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 40;
+      padding: 16px;
+    }
+
+    #site-collab-odoo .modal.open { display: flex; }
+
+    #site-collab-odoo .modal-card {
+      width: min(640px, 100%);
+      background: linear-gradient(150deg, rgba(15, 20, 44, 0.96), rgba(28, 15, 53, 0.95));
+      border: 2px solid #8ea5ff;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 0 28px rgba(80, 234, 255, 0.24);
+    }
+
+    #site-collab-odoo .modal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    #site-collab-odoo .modal-grid .full { grid-column: 1 / -1; }
+
+    #site-collab-odoo .modal-actions {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    #site-collab-odoo .modal-success { display: none; }
+    #site-collab-odoo .modal.success .modal-form { display: none; }
+    #site-collab-odoo .modal.success .modal-success { display: block; }
+
+    @media (max-width: 980px) {
+      #site-collab-odoo .services,
+      #site-collab-odoo .collabs,
+      #site-collab-odoo .status { grid-column: span 12; }
+      #site-collab-odoo .hello { padding-right: 0; }
+      #site-collab-odoo .starburst { position: static; margin-top: 10px; }
+      #site-collab-odoo .modal-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <section id="site-collab-odoo" aria-label="Site Collab Odoo block">
+    <div class="scanlines"></div>
+
+    <header class="topbar">
+      <div class="logo">COLLAB // Y2K NETWORK</div>
+      <div class="actions">
+        <button class="btn" id="toggleRainbow">RAINBOW MODE</button>
+        <button class="btn btn-accent" id="openCollab">START COLLAB</button>
+      </div>
+    </header>
+
+    <div class="hero">
+      <h1 class="hello" id="hello"></h1>
+      <div class="starburst">NOW!</div>
+
+      <div class="ticker"><span id="ticker"></span></div>
+
+      <div class="intro">
+        <div id="bio"></div>
+        <div class="invite" id="invite"></div>
+      </div>
+
+      <div class="toolbar">
+        <label for="lang">Idioma / Language / Idioma:</label>
+        <select id="lang">
+          <option value="es_CL">Español</option>
+          <option value="en_US" selected>English</option>
+          <option value="pt_BR">Português</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid">
+      <article class="panel services">
+        <h2 id="servicesTitle"></h2>
+        <ul id="servicesList"></ul>
+        <div class="service-cta">
+          <button class="btn btn-accent" id="openCollabFromServices">COLLAB NOW - CONTACT NOW</button>
+        </div>
+      </article>
+
+      <article class="panel collabs">
+        <h2 id="collabsTitle"></h2>
+        <ul>
+          <li><a href="https://www.etsy.com/shop/LootApparelBoutique" target="_blank" rel="noopener noreferrer">Loot Apparel Boutique</a> — <span id="c1"></span></li>
+          <li><a href="https://amazonicwav.tumblr.com/" target="_blank" rel="noopener noreferrer">Amazonic.wav</a> — <span id="c2"></span></li>
+          <li><a href="https://nexusgenesis.odooconsultores.cl/recepcion" target="_blank" rel="noopener noreferrer">Posada del Grifo Blanco</a> — <span id="c3"></span></li>
+          <li><a href="https://nexusgenesis.odooconsultores.cl/tematicas" target="_blank" rel="noopener noreferrer">Nexus Genesis </a> — <span id="c4"></span></li>
+          <li>Wizards SK8 — <span id="c5"></span></li>
+        </ul>
+      </article>
+
+      <article class="panel status">
+        <h2 id="statusTitle"></h2>
+        <ul>
+          <li><strong id="statusNodeLabel"></strong>: <span id="statusNodeValue"></span></li>
+          <li><strong id="statusCollabLabel"></strong>: <span id="statusCollabValue"></span></li>
+          <li><strong id="statusSignalLabel"></strong>: <span id="statusSignalValue"></span></li>
+        </ul>
+      </article>
+    </div>
+
+    <footer class="footer" id="footer"></footer>
+
+    <div class="modal" id="collabModal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
+      <div class="modal-card">
+        <div class="modal-form">
+          <h2 id="modalTitle">START COLLAB</h2>
+          <div class="modal-grid">
+            <div class="full">
+              <label for="projectIdea" id="projectIdeaLabel"></label>
+              <textarea id="projectIdea" placeholder="Describe your idea..."></textarea>
+            </div>
+            <div>
+              <label for="collabType" id="collabTypeLabel"></label>
+              <input id="collabType" type="text" placeholder="Research / Design / Event">
+            </div>
+            <div>
+              <label for="budgetExchange" id="budgetLabel"></label>
+              <input id="budgetExchange" type="text" placeholder="Budget / Exchange">
+            </div>
+            <div class="full">
+              <label for="contactInfo" id="contactLabel"></label>
+              <input id="contactInfo" type="text" placeholder="email, telegram, instagram...">
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button class="btn" id="closeModal">CLOSE</button>
+            <button class="btn btn-accent" id="sendCollab">SEND REQUEST</button>
+          </div>
+        </div>
+
+        <div class="modal-success">
+          <h2 id="successTitle"></h2>
+          <p id="successMessage"></p>
+          <div class="modal-actions">
+            <button class="btn btn-accent" id="closeSuccess">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      const root = document.getElementById('site-collab-odoo');
+      if (!root) return;
+
+      const targetEmail = atob('ZWxrZWFudWNoZWVzZUBnbWFpbC5jb20=');
+
+      const i18n = {
+        es: {
+          ticker: ':: CREATIVE SIGNAL DETECTED :: WEB3 + CULTURE + DESIGN + EVENTS :: GLOBAL COLLABORATION NODE ::',
+          hello: 'HELLO FUTURE WORLD!',
+          bio: 'Soy Keanucheese — creativo multidisciplinario y constructor de comunidades. Trabajo en la intersección entre cultura digital, arte, web3 y experiencias IRL.',
+          invite: 'Busco colaboradores, artistas, investigadores y colectivos que quieran construir proyectos culturales, digitales y experimentales.',
+          servicesTitle: 'SERVICIOS',
+          servicesCTA: 'COLLAB NOW - CONTACT NOW',
+          rainbow: 'RAINBOW MODE',
+          startCollab: 'START COLLAB',
+          services: [
+            'Diseño web y experiencia digital',
+            'Arquitectura de comunidades (Discord / Web3)',
+            'Investigación creativa e innovación cultural',
+            'Dirección artística y visual',
+            'Prototipos digitales experimentales'
+          ],
+          collabsTitle: 'COLLABS REALIZADAS',
+          c1: 'Creative research & design | USA',
+          c2: 'Video experimentation & audiovisual identity',
+          c3: 'Neo-medieval community laboratory',
+          c4: 'IRL/URL innovation community | Solarpunk',
+          c5: 'Independent skateboarding collective',
+          statusTitle: 'NODE STATUS',
+          statusNodeLabel: 'CREATIVE NODE',
+          statusNodeValue: 'ONLINE',
+          statusCollabLabel: 'COLLABORATIONS',
+          statusCollabValue: 'OPEN',
+          statusSignalLabel: 'SIGNAL',
+          statusSignalValue: 'ACTIVE',
+          footer: 'Independent Creative Network — Digital Culture / Art / Web3 / Community',
+          projectIdeaLabel: 'Idea del proyecto',
+          collabTypeLabel: 'Tipo de colaboración',
+          budgetLabel: 'Presupuesto / Intercambio',
+          contactLabel: 'Contacto',
+          close: 'CERRAR',
+          send: 'ENVIAR SOLICITUD',
+          successTitle: '¡SOLICITUD ENVIADA!',
+          successMessage: 'Hemos enviado tu petición a la bandeja de mensajes del Keanu, te consideraremos, pronta será tu respuesta!'
+        },
+        en: {
+          ticker: ':: CREATIVE SIGNAL DETECTED :: WEB3 + CULTURE + DESIGN + EVENTS :: GLOBAL COLLABORATION NODE ::',
+          hello: 'HELLO FUTURE WORLD!',
+          bio: 'I am Keanucheese — a multidisciplinary creative and community builder. I work at the intersection of digital culture, art, web3 and IRL experiences.',
+          invite: 'Open node for artists, innovators and cultural builders ready to co-create experimental projects.',
+          servicesTitle: 'SERVICES',
+          servicesCTA: 'COLLAB NOW - CONTACT NOW',
+          rainbow: 'RAINBOW MODE',
+          startCollab: 'START COLLAB',
+          services: [
+            'Web design and digital experience',
+            'Community architecture (Discord / Web3)',
+            'Creative research and cultural innovation',
+            'Art and visual direction',
+            'Experimental digital prototypes'
+          ],
+          collabsTitle: 'DELIVERED COLLABS',
+          c1: 'Creative research & design | USA',
+          c2: 'Video experimentation & audiovisual identity',
+          c3: 'Neo-medieval community laboratory',
+          c4: 'IRL/URL innovation community | Solarpunk',
+          c5: 'Independent skateboarding collective',
+          statusTitle: 'NODE STATUS',
+          statusNodeLabel: 'CREATIVE NODE',
+          statusNodeValue: 'ONLINE',
+          statusCollabLabel: 'COLLABORATIONS',
+          statusCollabValue: 'OPEN',
+          statusSignalLabel: 'SIGNAL',
+          statusSignalValue: 'ACTIVE',
+          footer: 'Independent Creative Network — Digital Culture / Art / Web3 / Community',
+          projectIdeaLabel: 'Project idea',
+          collabTypeLabel: 'Type of collaboration',
+          budgetLabel: 'Budget / Exchange',
+          contactLabel: 'Contact',
+          close: 'CLOSE',
+          send: 'SEND REQUEST',
+          successTitle: 'REQUEST SENT!',
+          successMessage: 'We have sent your request to Keanu\'s inbox. We will consider it, and your response will come soon!'
+        },
+        pt: {
+          ticker: ':: CREATIVE SIGNAL DETECTED :: WEB3 + CULTURE + DESIGN + EVENTS :: GLOBAL COLLABORATION NODE ::',
+          hello: 'HELLO FUTURE WORLD!',
+          bio: 'Sou Keanucheese — criativo multidisciplinar e construtor de comunidades. Trabalho na interseção entre cultura digital, arte, web3 e experiências IRL.',
+          invite: 'Nó aberto para artistas, inovadores e coletivos culturais que queiram construir projetos experimentais.',
+          servicesTitle: 'SERVIÇOS',
+          servicesCTA: 'COLLAB NOW - CONTACT NOW',
+          rainbow: 'RAINBOW MODE',
+          startCollab: 'START COLLAB',
+          services: [
+            'Design web e experiência digital',
+            'Arquitetura de comunidades (Discord / Web3)',
+            'Pesquisa criativa e inovação cultural',
+            'Direção artística e visual',
+            'Protótipos digitais experimentais'
+          ],
+          collabsTitle: 'COLLABS REALIZADAS',
+          c1: 'Creative research & design | USA',
+          c2: 'Video experimentation & audiovisual identity',
+          c3: 'Neo-medieval community laboratory',
+          c4: 'Comunidade de inovação IRL/URL | Solarpunk',
+          c5: 'Coletivo independente de skate',
+          statusTitle: 'STATUS DO NÓ',
+          statusNodeLabel: 'NÓ CRIATIVO',
+          statusNodeValue: 'ONLINE',
+          statusCollabLabel: 'COLABORAÇÕES',
+          statusCollabValue: 'ABERTAS',
+          statusSignalLabel: 'SINAL',
+          statusSignalValue: 'ATIVO',
+          footer: 'Independent Creative Network — Digital Culture / Art / Web3 / Community',
+          projectIdeaLabel: 'Ideia do projeto',
+          collabTypeLabel: 'Tipo de colaboração',
+          budgetLabel: 'Orçamento / Troca',
+          contactLabel: 'Contato',
+          close: 'FECHAR',
+          send: 'ENVIAR PEDIDO',
+          successTitle: 'PEDIDO ENVIADO!',
+          successMessage: 'Enviamos seu pedido para a caixa de mensagens do Keanu. Vamos considerar e sua resposta chegará em breve!'
+        }
+      };
+
+      const ids = [
+        'ticker', 'hello', 'bio', 'invite', 'servicesTitle', 'collabsTitle',
+        'c1', 'c2', 'c3', 'c4', 'c5', 'statusTitle', 'statusNodeLabel', 'statusNodeValue',
+        'statusCollabLabel', 'statusCollabValue', 'statusSignalLabel', 'statusSignalValue',
+        'footer', 'projectIdeaLabel', 'collabTypeLabel', 'budgetLabel', 'contactLabel',
+        'successTitle', 'successMessage'
+      ];
+
+      const langEl = root.querySelector('#lang');
+      const modal = root.querySelector('#collabModal');
+      const openButtons = [root.querySelector('#openCollab'), root.querySelector('#openCollabFromServices')];
+      let currentLang = 'en';
+      const odooLangMap = { es: 'es_ES', en: 'en_US', pt: 'pt_BR' };
+
+      function render(lang) {
+        const t = i18n[lang] || i18n.en;
+        currentLang = lang;
+
+        ids.forEach((id) => {
+          const node = root.querySelector(`#${id}`);
+          if (node) node.textContent = t[id];
+        });
+
+        const list = root.querySelector('#servicesList');
+        list.innerHTML = '';
+        t.services.forEach((service) => {
+          const li = document.createElement('li');
+          li.textContent = service;
+          list.appendChild(li);
+        });
+
+        root.querySelector('#openCollabFromServices').textContent = t.servicesCTA;
+        root.querySelector('#toggleRainbow').textContent = t.rainbow;
+        root.querySelector('#openCollab').textContent = t.startCollab;
+        root.querySelector('#closeModal').textContent = t.close;
+        root.querySelector('#sendCollab').textContent = t.send;
+        root.querySelector('#closeSuccess').textContent = 'OK';
+
+        document.documentElement.lang = odooLangMap[lang] || 'en_US';
+      }
+
+      function openModal() {
+        modal.classList.add('open');
+        modal.classList.remove('success');
+        modal.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeModal() {
+        modal.classList.remove('open');
+        modal.classList.remove('success');
+        modal.setAttribute('aria-hidden', 'true');
+      }
+
+      openButtons.forEach((btn) => btn.addEventListener('click', openModal));
+      root.querySelector('#closeModal').addEventListener('click', closeModal);
+      root.querySelector('#closeSuccess').addEventListener('click', closeModal);
+
+      root.querySelector('#toggleRainbow').addEventListener('click', () => {
+        root.classList.toggle('rainbow-on');
+      });
+
+      root.querySelector('#sendCollab').addEventListener('click', async () => {
+        const idea = root.querySelector('#projectIdea').value.trim();
+        const type = root.querySelector('#collabType').value.trim();
+        const budget = root.querySelector('#budgetExchange').value.trim();
+        const contact = root.querySelector('#contactInfo').value.trim();
+
+        const recipient = targetEmail;
+
+        const payload = {
+          _subject: 'Collab Request - Site Collab',
+          language: currentLang,
+          project_idea: idea,
+          collaboration_type: type,
+          budget_exchange: budget,
+          contact,
+          _template: 'table'
+        };
+
+        try {
+          const response = await fetch(`https://formsubmit.co/ajax/${recipient}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          });
+
+          if (!response.ok) throw new Error('send_failed');
+          modal.classList.add('success');
+        } catch (error) {
+          const subject = encodeURIComponent('Collab Request - Site Collab');
+          const body = encodeURIComponent(
+            `Language: ${currentLang}\n\nProject idea: ${idea}\nType: ${type}\nBudget/Exchange: ${budget}\nContact: ${contact}`
+          );
+          window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
+          modal.classList.add('success');
+        }
+      });
+
+      modal.addEventListener('click', (event) => {
+        if (event.target === modal) closeModal();
+      });
+
+      langEl.addEventListener('change', (event) => render(event.target.value));
+      render('en');
+    })();
+  </script>
+</body>
+</html>
