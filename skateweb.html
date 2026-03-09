@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SkateWeb</title>
+  <style>
+    :root {
+      --off-image: url("./plantilla_pantalla_off.png");
+      --on-image: url("./plantilla_pantalla_on.png");
+      --screen-top: 18%;
+      --screen-left: 17%;
+      --screen-width: 66%;
+      --screen-height: 50%;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at top, #222, #080808);
+      color: #f5f5f5;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .wrapper {
+      width: min(980px, 96vw);
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      letter-spacing: .03em;
+    }
+
+    p {
+      margin: 0 0 16px;
+      opacity: .85;
+      font-size: .95rem;
+    }
+
+    .pc {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      border-radius: 12px;
+      background-image: var(--off-image);
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .45);
+      overflow: hidden;
+    }
+
+    .pc.on { background-image: var(--on-image); }
+
+    .screen {
+      position: absolute;
+      top: var(--screen-top);
+      left: var(--screen-left);
+      width: var(--screen-width);
+      height: var(--screen-height);
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .screen:focus-visible {
+      outline: 2px solid #58a6ff;
+      outline-offset: 2px;
+    }
+
+    .status {
+      margin-top: 14px;
+      font-weight: 700;
+    }
+
+    .hint {
+      font-size: .85rem;
+      opacity: .75;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrapper">
+    <h1>SkateWeb</h1>
+    <p>Haz clic dentro de la pantalla para encender la PC.</p>
+
+    <div id="pc" class="pc" aria-live="polite">
+      <button id="screenBtn" class="screen" aria-label="Pantalla de la PC"></button>
+    </div>
+
+    <div id="status" class="status">Estado: apagada</div>
+    <div class="hint">Cuando esté encendida, al hacer clic abrirá la web solicitada.</div>
+  </main>
+
+  <script>
+    const pc = document.getElementById('pc');
+    const screenBtn = document.getElementById('screenBtn');
+    const status = document.getElementById('status');
+    const targetUrl = 'https://nexusgenesis.odooconsultores.cl/meetkeanu';
+
+    let isOn = false;
+
+    function render() {
+      pc.classList.toggle('on', isOn);
+      status.textContent = `Estado: ${isOn ? 'encendida' : 'apagada'}`;
+    }
+
+    screenBtn.addEventListener('click', () => {
+      if (!isOn) {
+        isOn = true;
+        render();
+        return;
+      }
+
+      window.open(targetUrl, '_blank', 'noopener');
+    });
+
+    render();
+  </script>
+</body>
+</html>
