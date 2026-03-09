@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>KeanuSite Test</title>
+  <style>
+    :root{
+      --intro-bg:url("https://raw.githubusercontent.com/KeanuCheese/MeetKeanu/0eea3cd83258d35474b7a98a0ed1c5f55d9cec77/descarga%20(3).png");
+      --intro-win:url("https://raw.githubusercontent.com/KeanuCheese/MeetKeanu/0eea3cd83258d35474b7a98a0ed1c5f55d9cec77/YWG.jpg");
+      --os-wall:url("https://raw.githubusercontent.com/KeanuCheese/MeetKeanu/0eea3cd83258d35474b7a98a0ed1c5f55d9cec77/brokensc-1536x864.jpg");
+      --face:#c0c0c0; --light:#fff; --dark:#000; --title:#000080; --title2:#1084d0;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;overflow:hidden;font-family:Tahoma,Verdana,Arial,sans-serif;background:#111}
+
+    .intro{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1200;background:rgba(0,0,0,.25) var(--intro-bg) repeat;overflow:hidden}
+    .introCard{position:relative;z-index:3;width:min(430px,76vw);aspect-ratio:1;border:1px solid rgba(255,255,255,.3);border-radius:12px;padding:8px;background:rgba(0,0,0,.25);cursor:pointer}
+    .introAscii{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;white-space:pre;pointer-events:none;font:clamp(6px,0.85vw,14px)/1 monospace;color:#f2f2f2;text-shadow:0 2px 2px #000;background:transparent;max-width:96vw;overflow:hidden;text-align:center}
+    .introCard img{width:100%;height:100%;object-fit:contain;border-radius:8px}
+    .trailLayer{position:absolute;inset:0;z-index:1;pointer-events:none}
+    .trailItem{position:absolute;max-width:140px;max-height:140px;transform:translate(-50%,-50%) rotate(var(--r));opacity:1;filter:drop-shadow(0 8px 12px rgba(0,0,0,.45))}
+    .cta{position:fixed;z-index:1201;padding:7px 10px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;border-radius:999px;pointer-events:none;opacity:0;transform:translate(14px,14px)}
+    .cta.on{opacity:1}
+
+    .os{position:fixed;inset:0;background:var(--os-wall) center/cover no-repeat;opacity:0;pointer-events:none}
+    .os.on{opacity:1;pointer-events:auto;transition:opacity .18s linear}
+    .desktop{position:absolute;inset:0 0 42px;overflow:hidden}
+    .icons{position:absolute;inset:0}
+    .deskIcon{position:absolute;width:90px;padding:4px;display:flex;flex-direction:column;gap:6px;align-items:center;color:#fff;text-shadow:0 1px 2px #000;cursor:default;user-select:none}
+    .deskIcon .box{width:36px;height:36px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.2);display:grid;place-items:center;border-radius:4px}
+    .deskIcon .lbl{font-size:12px;text-align:center;line-height:1.1;word-break:break-word}
+    .deskIcon.sel{outline:1px dotted #fff;outline-offset:2px;background:rgba(0,0,0,.2)}
+
+    .taskbar{position:absolute;left:0;right:0;bottom:0;height:42px;padding:0 8px;background:var(--face);border-top:1px solid #767676;display:flex;align-items:center;gap:8px;z-index:600}
+    .start,.task,.clock,.startMenu,.btn,.calcBtn,.langSel{border:1px solid #2f2f2f;background:var(--face)}
+    .start{min-width:92px;height:30px;padding:0 10px;display:flex;gap:8px;align-items:center;cursor:pointer;font-size:12px;font-weight:700}
+    .start:active,.task.active,.btn:active,.calcBtn:active{border-color:var(--dark) var(--light) var(--light) var(--dark)}
+    .tasks{display:flex;gap:6px;overflow:auto;max-width:55vw}
+    .task{padding:6px 10px;font-size:12px;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+    .spacer{flex:1}
+    .audioCtrl{width:28px;height:28px;display:grid;place-items:center;border:1px solid #2f2f2f;background:#d7d7d7;cursor:pointer;font-size:12px;user-select:none}
+    .audioCtrl:hover{background:#efefef}
+    .langSel{height:28px;padding:0 8px;font-size:12px;outline:none}
+    .clock{height:28px;padding:0 9px;display:flex;align-items:center;font-size:12px}
+
+    .startMenu{position:absolute;left:8px;bottom:44px;width:280px;display:none;z-index:750}
+    .startMenu.on{display:block}
+    .smHead{height:40px;padding:0 10px;background:linear-gradient(180deg,var(--title),var(--title2));color:#fff;display:flex;align-items:center;font-weight:700}
+    .smBody{padding:6px}
+    .menuItem{padding:8px;display:flex;align-items:center;gap:10px;border:1px solid transparent;font-size:13px;cursor:pointer}
+    .menuItem:hover{background:#000080;color:#fff}
+    .menuSep{height:1px;background:rgba(0,0,0,.3);margin:5px 0}
+
+    .win{position:absolute;max-width:min(96vw,1320px);max-height:min(92vh,900px);background:var(--face);border:1px solid #1f1f1f;box-shadow:0 10px 18px rgba(0,0,0,.35);display:flex;flex-direction:column;z-index:100;overflow:hidden}
+    .win.compact{width:auto;height:auto;min-width:0;max-width:min(94vw,460px)}
+    .win.max{left:6px!important;top:6px!important;width:calc(100vw - 12px)!important;height:calc(100vh - 52px)!important}
+    .head{height:28px;background:linear-gradient(90deg,var(--title),var(--title2));display:flex;align-items:center;justify-content:space-between;color:#fff;padding:0 6px;cursor:grab}
+    .title{display:flex;gap:8px;font-size:12px;font-weight:700;align-items:center;min-width:0}
+    .title span:last-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .btns{display:flex;gap:4px;align-items:center}
+    .btn{width:20px;height:18px;display:grid;place-items:center;cursor:pointer;font-size:11px;font-weight:700;color:#000;background:#d8d8d8;border-radius:2px}
+    .body{background:transparent;overflow:auto;flex:1;display:flex;min-height:0}
+    .body > .panel{flex:1}
+    .panel{background:#efefef;padding:10px;font-size:13px}
+    .tiny{font-size:11px;color:#333}
+    .folderGrid{display:flex;flex-direction:column;gap:4px}
+    .entry{display:flex;gap:8px;align-items:center;padding:6px 8px;border:1px solid #b3b3b3;background:#f5f5f5;cursor:pointer}
+    .entry:hover{background:#dce8ff}
+    .embed{width:100%;height:100%;min-height:min(82vh,760px);border:none;background:#000;display:block;flex:1}
+
+    .calcWrap{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+    .calcDisplay{width:100%;padding:6px;margin-bottom:6px;text-align:right;font-family:monospace;background:#fff;border:1px solid #999}
+    .calcBtn{padding:8px;cursor:pointer}
+    .noteWrap{display:flex;flex-direction:column;gap:8px;min-width:min(90vw,460px)}
+    .noteArea{height:min(45vh,320px);resize:vertical;padding:8px;font:12px/1.35 Tahoma,Verdana,Arial,sans-serif;border:1px solid #999}
+    .snakeWrap{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+    #snakeCanvas{background:#000;border:2px solid #555;image-rendering:pixelated;max-width:76vw;height:auto}
+
+    .cookieWin{position:fixed;right:16px;bottom:50px;width:min(360px,92vw);z-index:1300}
+    .powerOverlay{position:fixed;inset:0;background:#000;z-index:2000;opacity:0;pointer-events:none;transition:opacity .9s ease}
+    .powerOverlay.on{opacity:1;pointer-events:auto}
+    .hibernateOverlay{position:fixed;inset:0;background:#000;z-index:1900;display:none;align-items:center;justify-content:center;cursor:pointer}
+    .hibernateOverlay.on{display:flex}
+    .hibernateOverlay.showVideo iframe{opacity:1}
+    .hibernateOverlay::before{content:"";position:absolute;inset:0;background:#000;opacity:1;pointer-events:none;transition:opacity 3s linear;z-index:1}
+    .hibernateOverlay.showVideo::before{opacity:0}
+    .hibernateOverlay iframe{position:relative;z-index:0;width:100vw;height:100vh;border:none;pointer-events:none;opacity:1;transition:opacity .35s ease}
+    .cookieWin .body{padding:10px}
+    .cookieBtns{display:flex;justify-content:flex-end;gap:6px;margin-top:8px}
+
+    .watermark{position:absolute;left:16px;right:16px;bottom:56px;z-index:30;color:#d9d9d9;text-shadow:0 1px 2px #000;font:clamp(4px,0.66vw,14px)/1.03 monospace;white-space:pre;pointer-events:none;text-align:left;background:transparent;overflow:hidden;max-height:calc(100vh - 120px)}
+    .os.on::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:580;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.035) 0,rgba(255,255,255,.035) 1px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);mix-blend-mode:soft-light}
+    .os.on::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:581;background:radial-gradient(ellipse at center,rgba(255,255,255,.04) 0%,transparent 56%,rgba(0,0,0,.24) 100%)}
+    .powerOverlay.oldOff{animation:crtOff .9s ease forwards}
+    @keyframes crtOff{0%{opacity:0;transform:scaleY(1)}55%{opacity:1;transform:scaleY(.015)}100%{opacity:1;transform:scaleY(0)}}
+
+    @media (max-width:680px){
+      .tasks{max-width:42vw}
+      .start{min-width:82px}
+      .win{max-width:96vw;max-height:84vh}
+    }
+  </style>
+</head>
+<body>
+  <div id="intro" class="intro">
+    <div class="trailLayer" id="trail"></div>
+    <pre class="introAscii">KeanuSite Test</pre>
+    <div id="introCard" class="introCard" tabindex="0"><img src="https://raw.githubusercontent.com/KeanuCheese/MeetKeanu/0eea3cd83258d35474b7a98a0ed1c5f55d9cec77/YWG.jpg" alt="Intro" loading="lazy"></div>
+  </div>
+  <div id="cta" class="cta">CLICK TO CONTINUE</div>
+  <div id="audioBtnIntro" class="audioCtrl" style="position:fixed;right:14px;bottom:14px;z-index:1202" title="Audio ambiente">▶</div>
+
+  <div id="os" class="os" aria-label="KeanuOS">
+    <div class="desktop" id="desktop"><div class="icons" id="icons"></div></div>
+    <pre class="watermark">KEANUSITE TEST</pre>
+    <div class="taskbar">
+      <div class="start" id="startBtn"><span>🟩</span><span data-i18n="start">Start</span></div>
+      <div class="tasks" id="tasks"></div>
+      <div class="spacer"></div>
+      <div class="audioCtrl" id="audioBtnTask" title="Audio ambiente" style="display:none">▶</div>
+      <select id="langSel" class="langSel" aria-label="Language selector">
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="ja">日本語</option>
+        <option value="pt">Português</option>
+      </select>
+      <div class="clock" id="clock">--:--</div>
+    </div>
+
+    <div class="startMenu" id="startMenu">
+      <div class="smHead">%username%</div>
+      <div class="smBody">
+        <div class="menuItem" data-open="calculator"><span>🧮</span><span data-i18n="calculator">Calculator</span></div>
+        <div class="menuItem" data-open="snake"><span>🐍</span><span data-i18n="snake">Snake</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="hibernateOverlay" class="hibernateOverlay" aria-hidden="true"><iframe id="hibernateFrame" src="" allow="autoplay; encrypted-media"></iframe></div>
+  <div id="powerOverlay" class="powerOverlay" aria-hidden="true"></div>
+
+  <script>
+    const I18N={
+      en:{start:'Start',calculator:'Calculator',snake:'Snake'},
+      es:{start:'Inicio',calculator:'Calculadora',snake:'Snake'},
+      ja:{start:'スタート',calculator:'電卓',snake:'スネーク'},
+      pt:{start:'Iniciar',calculator:'Calculadora',snake:'Snake'}
+    };
+    const state={lang:localStorage.getItem('lang')||'en'};
+    const intro=document.getElementById('intro'),os=document.getElementById('os'),cta=document.getElementById('cta');
+    const startBtn=document.getElementById('startBtn'),startMenu=document.getElementById('startMenu');
+    const langSel=document.getElementById('langSel');
+    const clock=document.getElementById('clock');
+
+    function t(k){return (I18N[state.lang]||I18N.en)[k]||k;}
+    function applyLang(){
+      document.documentElement.lang=state.lang;
+      document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t(el.dataset.i18n));
+      localStorage.setItem('lang',state.lang);
+    }
+
+    langSel.value=state.lang;
+    langSel.onchange=()=>{state.lang=langSel.value;applyLang();};
+    applyLang();
+
+    function tick(){
+      const d=new Date();
+      clock.textContent=d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+    }
+    tick();
+    setInterval(tick,1000);
+
+    function showOS(){
+      intro.style.display='none';
+      cta.style.display='none';
+      document.getElementById('audioBtnIntro').style.display='none';
+      document.getElementById('audioBtnTask').style.display='grid';
+      os.classList.add('on');
+    }
+
+    document.getElementById('introCard').onclick=showOS;
+    document.getElementById('introCard').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();showOS();}};
+    addEventListener('mousemove',e=>{cta.style.left=e.clientX+'px';cta.style.top=e.clientY+'px';cta.classList.add('on');});
+
+    addEventListener('click',()=>startMenu.classList.remove('on'));
+    document.querySelector('.taskbar').onclick=e=>e.stopPropagation();
+    startBtn.onclick=e=>{e.stopPropagation();startMenu.classList.toggle('on');};
+  </script>
+</body>
+</html>
