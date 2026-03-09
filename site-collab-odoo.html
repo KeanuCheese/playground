@@ -1,7 +1,4 @@
-<!doctype html>
-<html lang="en_US">
-<head>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Site Collab | Odoo Embed | Y2K Edition</title>
   <style>
@@ -267,6 +264,7 @@
       display: grid;
       grid-template-columns: repeat(12, minmax(0, 1fr));
       gap: 12px;
+      align-items: start;
     }
 
     #site-collab-odoo .panel {
@@ -289,6 +287,7 @@
     #site-collab-odoo .services { grid-column: span 6; }
     #site-collab-odoo .collabs { grid-column: span 4; }
     #site-collab-odoo .status { grid-column: span 2; }
+    #site-collab-odoo .status-bottom { margin-top: 12px; }
 
     #site-collab-odoo ul {
       margin: 0;
@@ -315,6 +314,24 @@
 
     #site-collab-odoo .service-cta { margin-top: 12px; }
     #site-collab-odoo .service-cta .btn { width: 100%; }
+
+    #site-collab-odoo .service-links {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    #site-collab-odoo .service-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 10px;
+      border: 1px solid #97abff;
+      border-radius: 8px;
+      background: rgba(9, 20, 52, 0.9);
+      text-decoration: none;
+    }
 
     #site-collab-odoo .footer {
       margin-top: 16px;
@@ -368,15 +385,14 @@
 
     @media (max-width: 980px) {
       #site-collab-odoo .services,
-      #site-collab-odoo .collabs,
-      #site-collab-odoo .status { grid-column: span 12; }
+      #site-collab-odoo .collabs { grid-column: span 12; }
       #site-collab-odoo .hello { padding-right: 0; }
       #site-collab-odoo .starburst { position: static; margin-top: 10px; }
       #site-collab-odoo .modal-grid { grid-template-columns: 1fr; }
     }
   </style>
-</head>
-<body>
+
+
   <section id="site-collab-odoo" aria-label="Site Collab Odoo block">
     <div class="scanlines"></div>
 
@@ -403,7 +419,7 @@
         <label for="lang">Idioma / Language / Idioma:</label>
         <select id="lang">
           <option value="es_CL">Español</option>
-          <option value="en_US" selected>English</option>
+          <option value="en_US" selected="">English</option>
           <option value="pt_BR">Português</option>
         </select>
       </div>
@@ -415,6 +431,10 @@
         <ul id="servicesList"></ul>
         <div class="service-cta">
           <button class="btn btn-accent" id="openCollabFromServices">COLLAB NOW - CONTACT NOW</button>
+        </div>
+        <div class="service-links">
+          <a href="https://discord.com/users/849764011670110250" target="_blank" rel="noopener noreferrer">Discord</a>
+          <a href="https://x.com/0xKeanuCheese" target="_blank" rel="noopener noreferrer">X</a>
         </div>
       </article>
 
@@ -429,15 +449,16 @@
         </ul>
       </article>
 
-      <article class="panel status">
-        <h2 id="statusTitle"></h2>
-        <ul>
-          <li><strong id="statusNodeLabel"></strong>: <span id="statusNodeValue"></span></li>
-          <li><strong id="statusCollabLabel"></strong>: <span id="statusCollabValue"></span></li>
-          <li><strong id="statusSignalLabel"></strong>: <span id="statusSignalValue"></span></li>
-        </ul>
-      </article>
     </div>
+
+    <article class="panel status status-bottom">
+      <h2 id="statusTitle"></h2>
+      <ul>
+        <li><strong id="statusNodeLabel"></strong>: <span id="statusNodeValue"></span></li>
+        <li><strong id="statusCollabLabel"></strong>: <span id="statusCollabValue"></span></li>
+        <li><strong id="statusSignalLabel"></strong>: <span id="statusSignalValue"></span></li>
+      </ul>
+    </article>
 
     <footer class="footer" id="footer"></footer>
 
@@ -517,7 +538,7 @@
           statusCollabValue: 'OPEN',
           statusSignalLabel: 'SIGNAL',
           statusSignalValue: 'ACTIVE',
-          footer: 'Independent Creative Network — Digital Culture / Art / Web3 / Community',
+          footer: '',
           projectIdeaLabel: 'Idea del proyecto',
           collabTypeLabel: 'Tipo de colaboración',
           budgetLabel: 'Presupuesto / Intercambio',
@@ -556,7 +577,7 @@
           statusCollabValue: 'OPEN',
           statusSignalLabel: 'SIGNAL',
           statusSignalValue: 'ACTIVE',
-          footer: 'Independent Creative Network — Digital Culture / Art / Web3 / Community',
+          footer: '',
           projectIdeaLabel: 'Project idea',
           collabTypeLabel: 'Type of collaboration',
           budgetLabel: 'Budget / Exchange',
@@ -595,7 +616,7 @@
           statusCollabValue: 'ABERTAS',
           statusSignalLabel: 'SINAL',
           statusSignalValue: 'ATIVO',
-          footer: 'Independent Creative Network — Digital Culture / Art / Web3 / Community',
+          footer: '',
           projectIdeaLabel: 'Ideia do projeto',
           collabTypeLabel: 'Tipo de colaboração',
           budgetLabel: 'Orçamento / Troca',
@@ -604,6 +625,45 @@
           send: 'ENVIAR PEDIDO',
           successTitle: 'PEDIDO ENVIADO!',
           successMessage: 'Enviamos seu pedido para a caixa de mensagens do Keanu. Vamos considerar e sua resposta chegará em breve!'
+        },
+        ja: {
+          ticker: ':: CREATIVE SIGNAL DETECTED :: WEB3 + CULTURE + DESIGN + EVENTS :: GLOBAL COLLABORATION NODE ::',
+          hello: 'ハロー・フューチャー・ワールド！',
+          bio: '私は Keanucheese。デジタルカルチャー、アート、Web3、そしてIRL体験の交差点で活動するマルチディシプリナリーなクリエイター／コミュニティビルダーです。',
+          invite: '実験的なプロジェクトを共創したいアーティスト、イノベーター、文化系コレクティブを募集中です。',
+          servicesTitle: 'サービス',
+          servicesCTA: '今すぐコラボ - 今すぐ連絡',
+          rainbow: 'レインボーモード',
+          startCollab: 'コラボを始める',
+          services: [
+            'Webデザインとデジタル体験設計',
+            'コミュニティ設計（Discord / Web3）',
+            'クリエイティブ・リサーチと文化的イノベーション',
+            'アートディレクション／ビジュアルディレクション',
+            '実験的デジタルプロトタイプ'
+          ],
+          collabsTitle: '実績コラボ',
+          c1: 'Creative research & design | USA',
+          c2: 'Video experimentation & audiovisual identity',
+          c3: 'Neo-medieval community laboratory',
+          c4: 'IRL/URL innovation community | Solarpunk',
+          c5: 'Independent skateboarding collective',
+          statusTitle: 'ノードステータス',
+          statusNodeLabel: 'CREATIVE NODE',
+          statusNodeValue: 'ONLINE',
+          statusCollabLabel: 'COLLABORATIONS',
+          statusCollabValue: 'OPEN',
+          statusSignalLabel: 'SIGNAL',
+          statusSignalValue: 'ACTIVE',
+          footer: '',
+          projectIdeaLabel: 'プロジェクトのアイデア',
+          collabTypeLabel: 'コラボの種類',
+          budgetLabel: '予算 / 交換',
+          contactLabel: '連絡先',
+          close: '閉じる',
+          send: 'リクエスト送信',
+          successTitle: '送信完了！',
+          successMessage: 'あなたのリクエストを Keanu の受信箱に送信しました。確認後、できるだけ早く返信します。'
         }
       };
 
@@ -619,11 +679,46 @@
       const modal = root.querySelector('#collabModal');
       const openButtons = [root.querySelector('#openCollab'), root.querySelector('#openCollabFromServices')];
       let currentLang = 'en';
-      const odooLangMap = { es: 'es_ES', en: 'en_US', pt: 'pt_BR' };
+      const odooLangMap = { es: 'es_ES', en: 'en_US', pt: 'pt_BR', ja: 'ja_JP' };
+
+      function normalizeLang(lang) {
+        if (!lang) return 'en';
+        if (lang === 'es' || lang === 'es_ES' || lang === 'es_CL') return 'es';
+        if (lang === 'pt' || lang === 'pt_BR') return 'pt';
+        if (lang === 'ja' || lang === 'ja_JP' || lang === 'jp') return 'ja';
+        if (lang === 'en' || lang === 'en_US') return 'en';
+        return 'en';
+      }
+
+
+      function getInitialLang() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('lang') || params.get('odoo_lang') || document.documentElement.lang || langEl.value || 'en';
+      }
+
+
+      function applyGlobalLanguage(normalizedLang) {
+        const odooLang = odooLangMap[normalizedLang] || 'en_US';
+        const url = new URL(window.location.href);
+        const hasLang = url.searchParams.get('lang') === odooLang;
+        const hasOdooLang = url.searchParams.get('odoo_lang') === odooLang;
+
+        if (!hasLang) {
+          url.searchParams.set('lang', odooLang);
+        }
+        if (!hasOdooLang) {
+          url.searchParams.set('odoo_lang', odooLang);
+        }
+
+        if (url.toString() !== window.location.href) {
+          window.location.href = url.toString();
+        }
+      }
 
       function render(lang) {
-        const t = i18n[lang] || i18n.en;
-        currentLang = lang;
+        const normalizedLang = normalizeLang(lang);
+        const t = i18n[normalizedLang] || i18n.en;
+        currentLang = normalizedLang;
 
         ids.forEach((id) => {
           const node = root.querySelector(`#${id}`);
@@ -645,7 +740,8 @@
         root.querySelector('#sendCollab').textContent = t.send;
         root.querySelector('#closeSuccess').textContent = 'OK';
 
-        document.documentElement.lang = odooLangMap[lang] || 'en_US';
+        langEl.value = normalizedLang;
+        document.documentElement.lang = odooLangMap[normalizedLang] || 'en_US';
       }
 
       function openModal() {
@@ -712,9 +808,11 @@
         if (event.target === modal) closeModal();
       });
 
-      langEl.addEventListener('change', (event) => render(event.target.value));
-      render('en');
+      langEl.addEventListener('change', (event) => {
+        const normalizedLang = normalizeLang(event.target.value);
+        render(normalizedLang);
+        applyGlobalLanguage(normalizedLang);
+      });
+      render(getInitialLang());
     })();
   </script>
-</body>
-</html>
